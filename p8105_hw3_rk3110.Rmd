@@ -36,6 +36,8 @@ library(p8105.datasets)
 data("instacart")
 ```
 
+The instacart dataset contains nearly 1.4 million observations of items ordered from Instacart by individuals in New York City in 2017.
+
 * How many aisles are there. and which aisles are the most items ordered from?
 
 ```{r}
@@ -65,12 +67,10 @@ instacart %>%
   )
 ```
 
+Fresh vegetables and fresh fruits have the most items ordered by far with each category having almost twice the number of items ordered as the third highest, packaged vegetables and fruits, has. 
 
 * Make a table showing the three most popular items in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”. Include the number of times each item is ordered in your table.
 
-Baking ingredients aisle id = 17
-dog food care aisle id = 40
-packaged vegetables fruits aisle id = 123
 ```{r}
 instacart %>% 
   filter(aisle %in% c("baking ingredients", "dog food care", "packaged vegetables fruits")) %>%
@@ -81,6 +81,7 @@ instacart %>%
   ) %>% 
   knitr::kable()
 ```
+
 This is not what I want. How do I get top 3 per group????
 
 * Make a table showing the mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week; format this table for human readers (i.e. produce a 2 x 7 table).
@@ -96,15 +97,19 @@ instacart %>%
     values_from = "mean_hod"
   )
 ```
+
 This doesn't work at all. I'll come back to it.
+
+
 
 # Problem 2
 
 ```{r}
 data("brfss_smart2010")
 ```
+
 First, some data cleaning:
-levels are Poor, Fair, Good, Very Good, Excellent
+
 ```{r}
 brfss = 
 brfss_smart2010 %>% 
@@ -117,11 +122,20 @@ brfss_smart2010 %>%
 * In 2002, which states were observed at 7 or more locations? What about in 2010?
 
 ```{r}
+brfss %>%
+  filter(year == "2002") %>% 
+  group_by(locationabbr, locationdesc) %>% 
+  summarise(n_obs = n())
 
+brfss %>%
+  filter(year == "2010") %>% 
+  group_by(locationabbr, locationdesc) %>% 
+  summarise(n_obs = n())
 ```
 
 
 * Construct a dataset that is limited to Excellent responses, and contains, year, state, and a variable that averages the data_value across locations within a state. Make a “spaghetti” plot of this average value over time within a state (that is, make a plot showing a line for each state across years – the geom_line geometry and group aesthetic will help).
+
 ```{r}
 brfss %>% 
   select(year, locationabbr, response, data_value, geo_location) %>% 
@@ -133,11 +147,19 @@ brfss %>%
   geom_line()
 ```
 
+*needs comment*
 
 * Make a two-panel plot showing, for the years 2006, and 2010, distribution of data_value for responses (“Poor” to “Excellent”) among locations in NY State.
+
 ```{r}
 brfss %>% 
-  filter(locationabbr == "NY", year %in% c("2006", "2007"))
+  filter(locationabbr == "NY", year %in% c("2006", "2010")) %>% 
+  group_by(year, locationdesc) %>% 
+  ggplot(aes(x = response, y = data_value, color = locationdesc)) +
+  geom_point() +
+  facet_grid(. ~ year)
 ```
 
+*needs comment*
 
+# Problem 3
