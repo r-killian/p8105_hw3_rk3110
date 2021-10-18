@@ -73,8 +73,8 @@ dog food care aisle id = 40
 packaged vegetables fruits aisle id = 123
 ```{r}
 instacart %>% 
-  group_by(aisle) %>% 
-  filter(aisle == "baking ingredients" | aisle == "dog food care" | aisle == "packaged vegetables fruits") %>% 
+  filter(aisle %in% c("baking ingredients", "dog food care", "packaged vegetables fruits")) %>%
+  group_by(aisle) %>%
   summarize(
     product_max = max(product_name),
     n_obs = n()
@@ -103,8 +103,41 @@ This doesn't work at all. I'll come back to it.
 ```{r}
 data("brfss_smart2010")
 ```
+First, some data cleaning:
+levels are Poor, Fair, Good, Very Good, Excellent
+```{r}
+brfss = 
+brfss_smart2010 %>% 
+  janitor::clean_names() %>% 
+  filter(topic == "Overall Health",
+         response %in% c("Poor", "Fair", "Good", "Very Good", "Excellent")) %>% 
+  mutate(response = factor(response, c("Poor", "Fair", "Good", "Very Good", "Excellent")))
+```
+
 * In 2002, which states were observed at 7 or more locations? What about in 2010?
 
+```{r}
+
+```
+
+
 * Construct a dataset that is limited to Excellent responses, and contains, year, state, and a variable that averages the data_value across locations within a state. Make a “spaghetti” plot of this average value over time within a state (that is, make a plot showing a line for each state across years – the geom_line geometry and group aesthetic will help).
+```{r}
+brfss %>% 
+  select(year, locationabbr, response, data_value, geo_location) %>% 
+  filter(response == "Excellent") %>% 
+  group_by(locationabbr, year) %>% 
+  mutate(data_avg = mean(data_value)) %>% 
+  select(year, locationabbr, data_avg) %>% 
+  ggplot(aes(x = year, y = data_avg, color = locationabbr)) +
+  geom_line()
+```
+
 
 * Make a two-panel plot showing, for the years 2006, and 2010, distribution of data_value for responses (“Poor” to “Excellent”) among locations in NY State.
+```{r}
+brfss %>% 
+  filter(locationabbr == "NY", year %in% c("2006", "2007"))
+```
+
+
