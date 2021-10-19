@@ -150,7 +150,8 @@ brfss %>%
   mutate(data_avg = mean(data_value)) %>% 
   select(year, locationabbr, data_avg) %>% 
   ggplot(aes(x = year, y = data_avg, color = locationabbr)) +
-  geom_line()
+  geom_line() +
+  theme(legend.position = "right")
 ```
 
 *needs comment*
@@ -202,6 +203,11 @@ I don't really see any trends here.
 * Accelerometer data allows the inspection activity over the course of the day. Make a single-panel plot that shows the 24-hour activity time courses for each day and use color to indicate day of the week. Describe in words any patterns or conclusions you can make based on this graph.
 
 ```{r}
-
+accel_df %>% 
+  group_by(day_id) %>% 
+  ggplot(aes(x = minute, y = activity, color = day)) +
+  geom_point(alpha = .8) +
+  theme(axis.text.x = element_text(angle = 90))
 ```
 
+The x-axis is a mess and I do not know why.
