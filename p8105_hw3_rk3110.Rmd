@@ -8,8 +8,6 @@ output: github_document
 
 ```{r message= FALSE}
 library(tidyverse)
-library(ggridges)
-library(viridis)
 
 knitr::opts_chunk$set(
   fig.width = 6,
@@ -180,7 +178,7 @@ brfss %>%
   facet_grid(. ~ year)
 ```
 
-The overall `data_value` range of each response type is fairly consistent across 2006 and 2010. The range of values for fair responses is wider in 2010 and the max `data_value` is highest in 2010 among the "Very good" responses.
+The overall `data_value` range of each response type is fairly consistent across 2006 and 2010. The range of values for fair responses is wider in 2010 and the max `data_value` is highest in 2010 among the "Very good" responses. The survey looked at more counties in 2010 than in 2006.
 
 # Problem 3
 
