@@ -38,6 +38,7 @@ data("instacart")
 
 The Instacart dataset contains nearly 1.4 million observations of items ordered from Instacart by individuals in New York City in 2017 and has `r ncol(instacart)` variables including the order ID number (`order_id`), the ID of the customer making the order (`user_id`), how many orders that customer has made (`order_number`), and how many days it has been since their last order (`days_since_prior_order`). For example, the first order in the dataset was ordered by user `r distinct(select(filter(instacart, order_id == 1), user_id))` and it was their `r distinct(select(filter(instacart, user_id == 112108), order_number))`th order. They placed the order at `r distinct(select(filter(instacart, user_id == 112108), order_hour_of_day))` AM and it had been `r distinct(select(filter(instacart, user_id == 112108), days_since_prior_order))` days since their last order. They ordered the following items: `r list(select(filter(instacart, user_id == 112108), product_name))`.
 
+### Number of aisles and popularity
 * How many aisles are there. and which aisles are the most items ordered from?
 
 ```{r}
@@ -50,6 +51,7 @@ instacart %>%
 There are 134 aisles.The top 3 aisles ordered from are fresh vegetables, fresh fruits, and packaged vegetables. 
 
 
+### Plot of aisles with more than 10K items ordered
 * Make a plot that shows the number of items ordered in each aisle, limiting this to aisles with more than 10000 items ordered. Arrange aisles sensibly, and organize your plot so others can read it.
 
 ```{r}
@@ -68,6 +70,7 @@ instacart %>%
 
 Fresh vegetables and fresh fruits have the most items ordered by far with each category having almost twice the number of items ordered as the third highest, packaged vegetables and fruits, has. 
 
+### Top 3 Table
 * Make a table showing the three most popular items in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”. Include the number of times each item is ordered in your table.
 
 ```{r}
@@ -83,6 +86,7 @@ instacart %>%
 
 The three most popular baking items are light brown sugar, pure baking soda, and cane sugar. The most popular dog food items are are chicken and rice dog treats, organix chicken and brown rice dog food, and small dog biscuits. The most popular packaged vegetable and fruit items are baby spinach, and organic raspberries and blueberries *(those last 3 sound like the start of a nice salad!)*
 
+### Apples and Ice cream
 * Make a table showing the mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week; format this table for human readers (i.e. produce a 2 x 7 table).
 
 ```{r}
@@ -123,6 +127,7 @@ brfss_smart2010 %>%
   mutate(response = factor(response, c("Poor", "Fair", "Good", "Very good", "Excellent")))
 ```
 
+### 7+ Locations
 * In 2002, which states were observed at 7 or more locations? What about in 2010?
 
 ```{r}
@@ -145,6 +150,7 @@ In 2002, 6 states had 7 or more observation locations: CT, FL, MA, NC, NJ, and P
 
 In 2010, 14 states had 7 or more observation locations: CA, CO, FL, MA, MD, NC, NE, NJ, NY, OH, PA, SC, TX, and WA.
 
+### Spaghetti Plot
 * Construct a dataset that is limited to Excellent responses, and contains, year, state, and a variable that averages the data_value across locations within a state. Make a “spaghetti” plot of this average value over time within a state (that is, make a plot showing a line for each state across years – the geom_line geometry and group aesthetic will help).
 
 ```{r}
@@ -162,6 +168,7 @@ brfss %>%
 The `data_avg` value for "Excellent" responses seems to vary widely across years even within the same state. 
 
 
+### NY 2006 vs 2010
 * Make a two-panel plot showing, for the years 2006, and 2010, distribution of data_value for responses (“Poor” to “Excellent”) among locations in NY State.
 
 ```{r}
@@ -194,6 +201,7 @@ accel_df =
 
 The data set `accel_df` contains `r nrow(accel_df)` observations of accelerometer data from a 63 year-old male collected every minute over 5 weeks. The variable `week` denotes what week from 1 to 5 the observation is from, `day_id` denotes the day since start of the study, `day` indicates the day of the week, `weekday` indicates if the day was a weekday or not (1 for weekday, 0 for weekend), `minute` indicates the minute of the day the observation occurs, starting at midnight, and `activity` is the activity count for each observation.
 
+### Trends?
 * Traditional analyses of accelerometer data focus on the total activity over the day. Using your tidied dataset, aggregate across minutes to create a total activity variable for each day, and create a table showing these totals. Are any trends apparent?
 
 ```{r}
@@ -216,6 +224,7 @@ accel_df %>%
 Looking at each individual day (via `day_id`) I do not see any particular trends. If I instead look at the days aggregated by day of the week, it appears that more activity occurs in the latter half of the week. Wednesday through Friday have higher daily activity than Sunday through Tuesday do. 
 
 
+### Activity over 24 hours
 * Accelerometer data allows the inspection activity over the course of the day. Make a single-panel plot that shows the 24-hour activity time courses for each day and use color to indicate day of the week. Describe in words any patterns or conclusions you can make based on this graph.
 
 ```{r}
